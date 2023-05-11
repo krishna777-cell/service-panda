@@ -1,10 +1,11 @@
-import { View, Text, FlatList, StyleSheet, Pressable, Image } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Pressable, Image, TouchableOpacity  } from 'react-native';
 import React, { useState, useEffect} from 'react';
 import { firebase } from '../Config';
 
+
 const db = firebase.firestore();
 
-const DashboardScreen = () => {
+const DashboardScreen = ({ navigation }) => {
 
   const [data, setData] = useState([]);
 
@@ -21,8 +22,12 @@ const DashboardScreen = () => {
   }, []);
 
   const renderItem = ({ item }) => {
+    const onPress = () => {
+      navigation.navigate('PersonDetail', { personId: item.id });
+    };
+  
     return (
-      <View style={styles.card}>
+      <TouchableOpacity style={styles.card} onPress={onPress}>
         <View style={styles.imageContainer}>
           <Image source={require('../components/krisss.jpg')} style={styles.image} />
         </View>
@@ -33,7 +38,7 @@ const DashboardScreen = () => {
           </View>
           <Text style={styles.emailText}>{item.email}</Text>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 

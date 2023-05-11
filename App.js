@@ -8,6 +8,7 @@ import {firebase} from './Config';
 import LoginScreen from './screens/LoginScreen';
 import SignupScreen from './screens/SignupScreen';
 import DashboardScreen from './screens/DashboardScreen';
+import PersonDetailScreen from './screens/PersonDetailScreen';
 
 
 const Stack = createStackNavigator();
@@ -30,6 +31,10 @@ export default function App() {
               name="Dashboard"
               component={DashboardScreen}
               options={{ headerShown: false }}
+            />
+            <Stack.Screen name="PersonDetail" 
+            component={PersonDetailScreen} 
+            options={{ headerShown: false }}
             />
           </>
         ) : (
