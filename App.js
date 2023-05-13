@@ -9,6 +9,7 @@ import LoginScreen from './screens/LoginScreen';
 import SignupScreen from './screens/SignupScreen';
 import DashboardScreen from './screens/DashboardScreen';
 import PersonDetailScreen from './screens/PersonDetailScreen';
+import AppInfoScreen from './screens/AppInfoScreen';
 
 
 const Stack = createStackNavigator();
@@ -27,6 +28,11 @@ export default function App() {
       <Stack.Navigator>
         {isAuthenticated ? (
           <>
+            <Stack.Screen
+              name="AppInfo"
+              component={AppInfoScreen}
+              options={{ headerShown: false }}
+            />
             <Stack.Screen
               name="Dashboard"
               component={DashboardScreen}

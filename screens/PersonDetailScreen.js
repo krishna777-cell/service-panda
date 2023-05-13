@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity  } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground, ScrollView } from 'react-native';
 import { firebase } from '../Config';
 
 const db = firebase.firestore();
@@ -12,10 +12,11 @@ const PersonDetailScreen = ({ route }) => {
     const fetchPersonData = async () => {
       const personRef = db.collection('users').doc(personId);
       const personData = await personRef.get();
-
+      console.log("personData", personData)
       if (personData.exists) {
         setPerson(personData.data());
       } else {
+        alert('No person data found')
         console.log('No person data found');
       }
     };
@@ -30,28 +31,34 @@ const PersonDetailScreen = ({ route }) => {
       })
       .catch(error => console.log('Error during logout: ', error));
   }
+
   return (
-    <View style={styles.container}>
-        <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
-            <Text style={styles.logoutText}>Logout</Text>
-          </TouchableOpacity>
-      {person ? (
-        <View style={styles.card}>
-          <View style={styles.imageContainer}>
-             <Image source={require('../components/krisss.jpg')} style={styles.image} />
-          </View>
-          <View style={styles.detailsContainer}>
+    // <View style={styles.container}>
+    <ScrollView style={{ flex: 1, backgroundColor: '#000548' }}>
+      <ImageBackground source={require('../components/bgtrees.jpg')} resizeMode='stretch'>
+        <Image style={styles.img2}
+          source={require('../components/applogo.png')}></Image>
+        {person ? (
+          <View style={styles.card}>
+            <TouchableOpacity onPress={() => { navigation.goBack() }}>
+              {/* <Image style={{ height: 20, width: 17, marginBottom: 20 }}
+                source={require('/Users/apple/Downloads/banda/screens/components/GreenBack.png')}></Image> */}
+            </TouchableOpacity>
+            <Image source={require('../components/PRofile.png')} style={styles.image} />
             <Text style={styles.nameText}>{person.name}</Text>
             <Text style={styles.detailText}>Email: {person.email}</Text>
             <Text style={styles.detailText}>Job: {person.role}</Text>
             <Text style={styles.detailText}>Ratings: {person.Ratings}</Text>
+            <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+              <Text style={styles.logoutText}>Logout</Text>
+            </TouchableOpacity>
           </View>
-          
-        </View>
-      ) : (
-        <Text>Loading...</Text>
-      )}
-    </View>
+        ) : (
+          <Text>Loading...</Text>
+        )}
+      </ImageBackground>
+    </ScrollView>
+    // </View>
   );
 };
 
@@ -63,14 +70,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   logoutButton: {
-    position: 'absolute',
-    top: 40,
-    right: 20,
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#00A991',
     borderRadius: 20,
     paddingVertical: 10,
     paddingHorizontal: 20,
-    elevation: 9999,
+    marginTop: 20
   },
   logoutText: {
     color: '#fff',
@@ -78,48 +82,47 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
   },
+  img2: {
+    alignSelf: "center",
+    justifyContent: "center",
+    marginTop: 90,
+    marginBottom: 40
+  },
   card: {
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
     width: '90%',
     height: 'auto',
-    padding: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    padding: 50,
+    margin: 10,
+    alignSelf: 'center',
   },
   nameText: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 10,
     color: '#333333',
+    alignSelf: 'center',
   },
   detailText: {
+    flex: 1,
+    width: "100%",
     fontSize: 18,
     marginBottom: 5,
     color: '#666666',
   },
-  imageContainer: {
+  image: {
     width: 64,
     height: 64,
     borderRadius: 32,
-    marginRight: 16,
     overflow: 'hidden',
-  },
-  image: {
-    width: '100%',
-    height: '100%',
+    alignSelf: 'center',
+    marginBottom: 10
   },
   detailsContainer: {
     flex: 1,
+    padding: 80,
+    margin: 10
   },
 });
 
